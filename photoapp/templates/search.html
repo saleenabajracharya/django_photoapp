@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<h2 style="color: white">Search results:</h2>
+{% if posts|length < 1 %}
+<p style="color: white">Your search - <b>{{query}}</b> - did not match any posts.</p>
+{%endif%}
      {% for posts in posts %}
+     
         <article class="media content-section">
             <img class="rounded-cirlce article-img" src="{{ posts.author.profile.image.url }}" alt="">
             <div class="media-body">

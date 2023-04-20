@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from .models import Post
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from blog.models import Post
+from django.shortcuts import render
 
 # def home(request):
 #     context = {
@@ -21,6 +22,12 @@ class PostListView(LoginRequiredMixin, ListView):
     template_name = 'home.html'
     context_object_name = 'posts'
     ordering = ["-date_posted"]
+     
+    
+
+
+
+    
 
 class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
@@ -29,7 +36,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'post_form.html'
-    fields = ['title', 'content', 'image']
+    fields = ['title',  'image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -44,7 +51,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     template_name = 'post_form.html'
-    fields = ['title', 'content', 'image']
+    fields = ['title',  'image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -66,3 +73,26 @@ class PostDeleteView(DeleteView):
         if self.request.user == post.author:
             return True
         return False
+    
+
+def search(request):
+        query = request.GET['query']
+        allPosts = Post.objects.filter(title__icontains=query).order_by("-date_posted")
+        params = {'posts': allPosts, 'query':query}
+        return render(request, 'search.html', params)
+
+
+def Post(request):
+    if request.method == 'POST':
+        form = Post(request.POST, request.FILES)
+        if form.is_valid():
+            # Process the uploaded image
+            pass
+    else:
+        form = Post()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'post_form.html', context)

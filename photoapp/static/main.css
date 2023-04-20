@@ -38,7 +38,7 @@ body {
   .content-section {
     background: #ffffff;
     /* border-radius: 20px; */
-    padding: 10px 20px;
+    padding: 10px 10px;
     /* border: 1px solid #dddddd; */
     border-radius: 10px;
     margin-bottom: 20px;
@@ -84,12 +84,12 @@ body {
     vertical-align: middle;
   }
 
-  .account-img {
+   .account-img {
     height: 125px;
     width: 125px;
     margin-right: 20px;
     margin-bottom: 16px;
-  }
+  } 
 
   .account-heading {
     font-size: 2.5rem;
@@ -144,6 +144,8 @@ body {
     text-align: center;
     border-radius: 30px;
   }
+
+
   #profile-h1{
       color: rgb(255, 255, 255);
       font-family: 'Poppins', sans-serif;
@@ -159,7 +161,7 @@ body {
     font-family: 'Poppins', sans-serif;
     border: none;
     outline: 0;
-    display: inline-block;
+    display: inline-block; 
     padding: 8px;
     color: white;
     background-color: #000;
@@ -169,21 +171,11 @@ body {
     font-size: 18px;
     transition: 1s;
     background: linear-gradient(270deg, rgb(247, 0, 255) 0%, rgb(98, 0, 255) 100%);
-  }
+  } 
 
-  /* a {
-    text-decoration: none;
-    font-size: 22px;
-    color: black;
-  }
 
-  button:hover, a:hover {
-    opacity: 0.7;
-    background-color: rgb(3, 1, 5);
-  } */
-
-  #profile-img{
+   #profile-img{
     margin-top: 20px;
     box-shadow: 0 14px 18px 0 rgba(0, 0, 0, 0.486);
     border-radius: 50px;
-  }
+  } 

@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +27,9 @@
               <a class="nav-item nav-link" href="{% url 'blog-home' %}">HOME</a>
               <a class="nav-item nav-link" href="{% url 'blog-about' %}">ABOUT</a>
             </div>
+
+            
+        
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
     
@@ -75,7 +79,16 @@
         </div>
       </nav>
     </header>
+    
     <main role="main" class="container">
+      {% if user.is_authenticated %}
+      <div class="search-form">
+        <form  method="GET" action="/search" class="form-inline my-2 my-lg-1">
+          <input style="margin-top: 8px; width: 80%;" class="form-control mr-sm-1" name="query" id="query" type="search" placeholder="Search" aria-label="Search">
+          <button  style="margin-bottom: 10px; width: 15%;" class="btn btn-primary mt-5  my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+    {% endif %}
       <div class="row">
         <div class="col-md-8">
           {% if messages %}
@@ -89,7 +102,7 @@
           <div class="col-md-8">
            {% block content %}{% endblock %}
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
           <div class="content-sectionw">
              <h3>Our Sidebar</h3>
             <p class='text-muted'>You can put any information here you'd like.
@@ -102,10 +115,10 @@
             </p> 
           
               </div> 
-          </div>
+          </div> -->
         </div>
       </div>
-
+<br><br>
 
 
         <footer class="" >

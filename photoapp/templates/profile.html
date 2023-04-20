@@ -13,6 +13,27 @@
 
       <h1 id="profile-h1">{{user.username|title}}</h1>
       <p class="title">{{user.email}}</p>
+
+
+    {% for post in posts %}
+    
+    <div class="post">
+    
+
+    <h2><a class="article-title" style="color: white; font-family: 'Poppins', sans-serif;" href="{% url 'blog-detail' post.id %}">{{ post.title }}</a></h2>
+    
+    <a href="{% url 'blog-detail' post.id %}"><img class="photo" src="{{post.image.url}}" alt="" ></a>
+    <div class="article-metadata">
+    <small class="text-muted">{{ post.date_posted }}</small>
+   
+    {% empty %}
+        <h1>No posts yet!</h1>
+    </div> 
+    {% endfor %}
+    </div>
+
+
+
       <!-- <p>My Social Live  Below</p> -->
       <a href="#" id="auth-links"><i class="fa fa-dribbble"></i></a>
       <a href="#" id="auth-links"><i class="fa fa-twitter"></i></a>

@@ -4,11 +4,12 @@
 
 {% block content %}
     <div class="content-section">
-        <form action="" method="post">
+        <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">New Post</legend>
                 {{ form|crispy }}
+                <div id="imagePreview"></div>
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Post</button>
@@ -18,4 +19,28 @@
             <small class="text-muted">Already have an account? <a href="{% url 'blog-home' %}">Go Back</a></small>
         </div>
     </div>
+
+    <script>
+        function previewImage(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+      
+            reader.onload = function(e) {
+              $('#imagePreview').html('<img src="' + e.target.result + '" class="img-fluid" />');
+            };
+      
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+      
+        $(document).ready(function() {
+          $('#id_image').change(function() {
+            previewImage(this);
+          });
+        });
+      </script>
+     
+      
+      
+      
 {% endblock content %}

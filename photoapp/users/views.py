@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import UserRegisterForm,ProfileUpdateForm, UserUpdateForm
+from django.views.generic import ListView, DetailView,UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from blog.models import Post
 
 
 def register(request):
@@ -19,7 +23,9 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html',)    
+    author = request.user
+    posts = Post.objects.filter(author=author)
+    return render(request, 'profile.html', {'author': author, 'posts': posts}) 
 
 def profile_update(request):
     if request.method == "POST":
@@ -42,4 +48,46 @@ def profile_update(request):
         "p_form": p_form
     }
     return render(request, 'profile_update.html',context)
+
+
+
+class UserPostListView(LoginRequiredMixin,ListView):
+    model = Post
+    template_name = 'profile.html'
+    context_object_name = 'posts'
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Post.objects.filter(author=user).order_by('-date_posted')
+        return queryset
+
+class PostDetailView(LoginRequiredMixin, DetailView):
+    model = Post
+    template_name = 'post_detail.html'
+
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    template_name = 'post_form.html'
+    fields = ['title',  'image']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = 'post_confirm_delete.html'
+    success_url = '/'
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
