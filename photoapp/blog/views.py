@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from .models import Post
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from blog.models import Post
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from django.views.generic import View
+
 
 # def home(request):
 #     context = {
@@ -73,7 +75,21 @@ class PostDeleteView(DeleteView):
         if self.request.user == post.author:
             return True
         return False
-    
+
+
+
+class ImageDownloadView(View):
+    def get(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        file_path = post.image.path
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type='application/octet-stream')
+            response['Content-Disposition'] = 'attachment; filename={}'.format(post.image.name.split('/')[-1])
+            return response
+        raise Http404
+
+
+
 
 def search(request):
         query = request.GET['query']
@@ -82,17 +98,3 @@ def search(request):
         return render(request, 'search.html', params)
 
 
-def Post(request):
-    if request.method == 'POST':
-        form = Post(request.POST, request.FILES)
-        if form.is_valid():
-            # Process the uploaded image
-            pass
-    else:
-        form = Post()
-
-    context = {
-        'form': form,
-    }
-
-    return render(request, 'post_form.html', context)

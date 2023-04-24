@@ -1,26 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
 
-        <article class="media content-section">
+        <article class="media content-section" style="height: 480px; width: 885px;">
             <img class="rounded-cirlce article-img" src="{{ object.author.profile.image.url }}" alt="">
             <div class="media-body">
               <div class="article-metadata">
                 <a class="mr-2" href="#">{{ object.author }}</a>
                 <small class="text-muted">{{ object.date_posted }}</small> <br>
-                <div class="container" >
-                  <img class="photo" src="{{object.image.url}}" alt="">
-                  
-                </div>  
+                <h3><a class="article-title" href="#">{{ object.title }}</a></h3>
+                <div class="section" style="display: flex;  ">
+                  <div class="container" style="border-radius: 10px; border: 1px solid black; border-radius: 10%;">
+                    <img class="photo" src="{{object.image.url}}" alt=""  style="margin:25px; border-radius: 10%;">
+                    
+                  </div>  
+                  <div class="container" style="border-radius: 10px; border: 1px solid black;border-radius: 10%;">
+                    <img class="photo" src="{{object.image.url}}" alt="" style="margin:25px; border-radius: 10%;">
+                    
+                  </div> 
+                </div>        
                 {% if object.author == user %}
 
-                    <div>
+                    <div style="margin:5px;">
                         <a class="btn btn-outline-success" href="{% url 'blog-update' object.id %}">Update</a>
-                        <a class="btn btn-outline-danger" href="{% url 'blog-delete' object.id %}">Delete</a>
+                        <a class="btn btn-outline-success" href="{% url 'image_download' post.pk %}">Download</a>
+
+                        <a class="btn btn-outline-success" href="{% url 'blog-update' object.id %}">Post</a>
+                        <a class="btn btn-outline-danger" href="{% url 'blog-delete' object.id %}">Cancel</a>
                     </div>
                   {% endif %}
               </div>
-              <h2><a class="article-title" href="#">{{ object.title }}</a></h2>
-              
               
             </div>
             <br>
